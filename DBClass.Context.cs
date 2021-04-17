@@ -12,6 +12,8 @@ namespace RMS
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class RMSEntities : DbContext
     {
@@ -25,5 +27,24 @@ namespace RMS
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<DataRefManagement> DataRefManagements { get; set; }
+    
+        public virtual ObjectResult<GetTables_Result> GetTables()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetTables_Result>("GetTables");
+        }
+    
+        public virtual int InsertDataRef(string @ref, string item)
+        {
+            var refParameter = @ref != null ?
+                new ObjectParameter("Ref", @ref) :
+                new ObjectParameter("Ref", typeof(string));
+    
+            var itemParameter = item != null ?
+                new ObjectParameter("Item", item) :
+                new ObjectParameter("Item", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("InsertDataRef", refParameter, itemParameter);
+        }
     }
 }

@@ -4,20 +4,81 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="RMSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityContainer Name="RMSModelStoreContainer" />
-      </Schema>
-    </edmx:StorageModels>
+    <Schema Namespace="RMSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'RMS.dbo.Courses' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="Courses">
+          <Property Name="CourseName" Type="nvarchar" MaxLength="255" />
+          <Property Name="NumberStudents" Type="int" />
+          <Property Name="CourseProf" Type="nvarchar" MaxLength="255" />
+        </EntityType>-->
+        <EntityType Name="DataRefManagement">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Ref" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Item" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Function Name="GetTables" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="InsertDataRef" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Ref" Type="nvarchar" Mode="In" />
+          <Parameter Name="Item" Type="nvarchar" Mode="In" />
+        </Function>
+        <EntityContainer Name="RMSModelStoreContainer">
+          <EntitySet Name="DataRefManagement" EntityType="Self.DataRefManagement" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="RMSModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityContainer Name="RMSEntities" annotation:LazyLoadingEnabled="true" />
+        <EntityContainer Name="RMSEntities" annotation:LazyLoadingEnabled="true" >
+          <EntitySet Name="DataRefManagements" EntityType="RMSModel.DataRefManagement" />
+          <FunctionImport Name="GetTables" ReturnType="Collection(RMSModel.GetTables_Result)" />
+          <FunctionImport Name="InsertDataRef">
+            <Parameter Name="Ref" Mode="In" Type="String" />
+            <Parameter Name="Item" Mode="In" Type="String" />
+          </FunctionImport>
+        </EntityContainer>
+        <EntityType Name="DataRefManagement">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Ref" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Item" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <ComplexType Name="GetTables_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="Ref" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Item" Nullable="false" MaxLength="50" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="RMSModelStoreContainer" CdmEntityContainer="RMSEntities" />
+        <EntityContainerMapping StorageEntityContainer="RMSModelStoreContainer" CdmEntityContainer="RMSEntities" >
+          <EntitySetMapping Name="DataRefManagements">
+            <EntityTypeMapping TypeName="RMSModel.DataRefManagement">
+              <MappingFragment StoreEntitySet="DataRefManagement">
+                <ScalarProperty Name="Item" ColumnName="Item" />
+                <ScalarProperty Name="Ref" ColumnName="Ref" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="GetTables" FunctionName="RMSModel.Store.GetTables">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="RMSModel.GetTables_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Ref" ColumnName="Ref" />
+                <ScalarProperty Name="Item" ColumnName="Item" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="InsertDataRef" FunctionName="RMSModel.Store.InsertDataRef" />
+        </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

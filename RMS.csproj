@@ -130,8 +130,12 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\DataAccessController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\SuperUserController.cs" />
+    <Compile Include="DataRefManagement.cs">
+      <DependentUpon>DBClass.tt</DependentUpon>
+    </Compile>
     <Compile Include="DBClass.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -146,6 +150,9 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DBClass.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="GetTables_Result.cs">
+      <DependentUpon>DBClass.tt</DependentUpon>
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -316,6 +323,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\DataAccess\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
