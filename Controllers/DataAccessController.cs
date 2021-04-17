@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -16,8 +17,9 @@ namespace RMS.Controllers
         }
         public ActionResult GetTables() 
         {
-            dbcontext
-            return JsonResult();
+            var tableList = dbcontext.GetTables().ToArray();
+            //Todo return json to layout dropdown
+            return Json(tableList, JsonRequestBehavior.AllowGet);
         }
     }
 }

@@ -29,11 +29,6 @@ namespace RMS
     
         public virtual DbSet<DataRefManagement> DataRefManagements { get; set; }
     
-        public virtual ObjectResult<GetTables_Result> GetTables()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetTables_Result>("GetTables");
-        }
-    
         public virtual int InsertDataRef(string @ref, string item)
         {
             var refParameter = @ref != null ?
@@ -45,6 +40,11 @@ namespace RMS
                 new ObjectParameter("Item", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("InsertDataRef", refParameter, itemParameter);
+        }
+    
+        public virtual ObjectResult<string> GetTables()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("GetTables");
         }
     }
 }

@@ -41,24 +41,25 @@
                         </li>
                         <li class="nav-item">
                             <div class="dropdown">
-                                <button class="btn btn-dark dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <button class="btn btn-dark dropdown-toggle" type="button" id="dataSource" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     Select Data Source
                                 </button>
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                                    <button class="dropdown-item" type="button">Students</button>
-                                    <button class="dropdown-item" type="button">AirCraft Parts</button>
-                                    <button class="dropdown-item" type="button">Human Resources</button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenu2" id="dataSourceDdl">
+
                                 </div>
                             </div>
                             @*<a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>*@
                         </li>
+                        @*<li class="nav-item">
+                            <a class="nav-link text-light" asp-area="" id="currentDataSource"></a>
+                        </li>*@
                         <!--Create new table-->
                         <li class="nav-item">
                             <div class="dropdown">
                                 <button class="btn btn-dark dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     SUDO Admin Functions
                                 </button>
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                                <div class="dropdown-menu" id="superAdminFunctions" aria-labelledby="dropdownMenu2">
                                     <button class="dropdown-item" type="button" id="createTableLink">Create New Table</button>
                                     <button class="dropdown-item" type="button">Manage Table</button>
                                     <button class="dropdown-item" type="button">Manage Users</button>
