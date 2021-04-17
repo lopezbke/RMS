@@ -1,0 +1,104 @@
+﻿
+@{
+    ViewBag.Title = "SudoCreateTable";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model RMS.Models.CreateTable
+
+<div id="knockoutapp">
+    <h2>Create New Table</h2>
+    <ul class="nav nav-tabs">
+        <li class="active nav-item"><a class="nav-link" data-toggle="tab" href="#tableCreateByForm">Create by Form</a></li>
+        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#menu1">Upload from Excel Template</a></li>
+
+    </ul>
+    <div class="tab-content">
+        <div id="tableCreateByForm" class="tab-pane fade in active" width="50px;">
+            <div class="">
+                <!-- Todo: bind to a model with name -->
+                <form method="post" action="SudoCreateTable">
+                    <div class="form-group">
+                        <div style="margin-top:2em;"></div>
+                        <input type="text" class="form-control" name="tableName" id="tableName" placeholder="Enter New Table Name" />
+                        <small id="smallText" class="form-text text-muted">ADD COLUMNS:</small>
+                    </div>
+                    <div class="form-group">
+                        <ul style="list-style-type: none;" data-bind="foreach: formFields">
+                            <li>
+                                <div class="form-row">
+                                    <div class="col">
+                                        <input placeholder="Column Name" type="text" class="form-control" data-bind="attr: {'id': 'columnIndex' + $index(),'name':'columnName' + '['+ $index()+ ']' }" />
+                                    </div>
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <select class="form-control" data-bind="attr: {'id': 'columnTypeIndex' + $index(),'name':'columnType' + '['+ $index()+ ']'  }">
+                                                <option>NVARCHAR(255)</option>
+                                                <option>INT</option>
+                                                <option>DATE</option>
+                                                <option>BOOL</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <button class="btn btn-outline-danger" data-bind="click: $parent.removeField, attr: { 'item-index': $index}">&times;</button>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                        <button type="button" style="width:75px;" class="btn btn-outline-primary btn-small" data-bind="click: addField">+</button>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-dark">Create Table</button>
+                </form>
+            </div>
+        </div>
+        <div id="menu1" class="tab-pane fade">
+            <h3>Import From Excel</h3>
+            <form>
+                <div class="form-group">
+                    <input type="file" class="form-control-file" />
+                </div>
+                <button type="submit" class="btn btn-primary">Create Table With Excel</button>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    $(document).on("submit", "form", function (e) {
+        alert("Table has been created.");
+    });
+    function ViewModel() {
+        var self = this;
+        self.myObservable = ko.observable("hello my self");
+
+        var columnInput = [
+            { ColumnName: "", ColumnType: "" }
+        ]
+        self.formFields = ko.observableArray([]);
+
+        self.addField = function () {
+
+            self.formFields.push(columnInput[0]);
+
+        }
+        self.removeField = function (data) {
+            var dtIndex = self.formFields.indexOf(data);
+            self.formFields.splice(dtIndex, 1);
+        }
+    }
+    const knockoutApp = document.querySelector("#knockoutapp");
+    ko.applyBindings(new ViewModel(), knockoutApp);
+</script>
+
