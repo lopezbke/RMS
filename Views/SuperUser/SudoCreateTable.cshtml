@@ -76,9 +76,6 @@
 
 
 <script>
-    $(document).on("submit", "form", function (e) {
-        alert("Table has been created.");
-    });
     function ViewModel() {
         var self = this;
         self.myObservable = ko.observable("hello my self");
@@ -101,4 +98,4 @@
     const knockoutApp = document.querySelector("#knockoutapp");
     ko.applyBindings(new ViewModel(), knockoutApp);
 </script>
-
+<script src="~/Scripts/Src/SudoCreateTable.js"></script>
